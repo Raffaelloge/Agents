@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f7f4">
+<title>Roster — your agent directory</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{color-scheme:light;--paper:#f7f7f4;--ink:#20231f;--muted:#858980;--line:#e6e7e0;--green:#315b45;--pale:#e9eee8;--orange:#d98952;--white:#fff;--shadow:0 16px 48px #22220d12}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh}
+button,input,textarea{font:inherit}button{cursor:pointer}
+.shell{max-width:1120px;margin:auto;padding:0 34px}
+header{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px;font:800 18px Manrope,sans-serif;letter-spacing:-.6px}
+.mark{width:29px;height:29px;border-radius:9px;background:var(--green);display:grid;place-items:center;color:white}
+.mark svg{width:17px}
+.header-right{display:flex;align-items:center;gap:17px;color:var(--muted);font-size:13px}
+.user-pill{display:flex;align-items:center;gap:8px;border-left:1px solid var(--line);padding-left:17px}
+.avatar{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:#e9e5da;color:#605745;font-size:11px;font-weight:700}
+.link-btn{border:0;background:none;color:#69716a;padding:6px;font-size:12px}.link-btn:hover{color:var(--ink)}
+main{padding:49px 0 70px}
+.eyebrow{font:500 10px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:1.8px;color:var(--green);margin:0 0 13px}
+h1{font:600 clamp(34px,5vw,48px)/1.12 Manrope,sans-serif;letter-spacing:-2.1px;margin:0}
+.subhead{color:#797d75;font-size:15px;margin:12px 0 0}
+.topline{display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+.primary{border:0;border-radius:8px;background:var(--green);color:white;font-size:13px;font-weight:600;padding:12px 17px;display:flex;align-items:center;gap:8px;box-shadow:0 3px 8px #315b4521;transition:transform .15s,background .15s}
+.primary:hover{background:#244834;transform:translateY(-1px)}
+.primary svg{width:15px;height:15px}
+.metrics{margin:36px 0 27px;display:flex;align-items:center;gap:13px}
+.metric{background:white;border:1px solid var(--line);border-radius:10px;padding:13px 17px;min-width:156px}
+.metric-num{font:600 22px Manrope,sans-serif;letter-spacing:-.7px}
+.metric-label{font:10px 'DM Mono',monospace;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px 0 14px;border-top:1px solid var(--line)}
+.section-label{font:500 11px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:1.1px;color:#696e65}
+.search{position:relative;width:245px}
+.search svg{position:absolute;width:15px;left:12px;top:11px;color:#989c94}
+.search input{width:100%;height:37px;border-radius:7px;border:1px solid var(--line);background:#fff;padding:0 12px 0 35px;outline:none;font-size:12px}
+.search input:focus{border-color:#789181;box-shadow:0 0 0 3px #315b4512}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:11px;padding:19px 19px 17px;min-height:174px;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s}
+.card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between}
+.agent-icon{height:37px;width:37px;border-radius:10px;background:var(--pale);display:grid;place-items:center;color:var(--green);font:600 12px Manrope,sans-serif;letter-spacing:-.4px}
+.card-actions{display:flex;gap:3px}
+.icon-btn{height:28px;width:28px;border:0;border-radius:6px;background:transparent;color:#969a91;display:grid;place-items:center}
+.icon-btn:hover{background:#f2f3ef;color:var(--ink)}
+.icon-btn svg{width:15px;height:15px}
+.card h3{font:700 15px Manrope,sans-serif;letter-spacing:-.3px;margin:15px 0 6px}
+.card p{color:#73776f;font-size:12.5px;line-height:1.55;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.card-foot{margin-top:auto;padding-top:13px;display:flex;align-items:center;gap:6px;color:#92968e;font:10px 'DM Mono',monospace}
+.dot{width:6px;height:6px;border-radius:50%;background:#75a083}
+.empty{grid-column:1/-1;text-align:center;border:1px dashed #d8dbd2;border-radius:11px;padding:54px 20px;background:#ffffff72}
+.empty-icon{width:45px;height:45px;margin:0 auto 13px;border-radius:13px;background:var(--pale);display:grid;place-items:center;color:var(--green)}
+.empty h2{font:700 16px Manrope,sans-serif;margin:0}
+.empty p{font-size:13px;color:var(--muted);margin:7px 0 17px}
+footer{margin-top:46px;border-top:1px solid var(--line);padding-top:15px;display:flex;justify-content:space-between;color:#a0a39b;font:10px 'DM Mono',monospace}
+.overlay{position:fixed;inset:0;background:#20251f70;backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:20px;z-index:5}
+.overlay.open{display:flex}
+.modal{width:min(100%,440px);background:#fff;border-radius:14px;box-shadow:0 24px 80px #0003;padding:25px}
+.modal-head{display:flex;justify-content:space-between;align-items:flex-start}
+.modal h2{font:700 21px Manrope,sans-serif;letter-spacing:-.6px;margin:0}
+.modal-intro{font-size:12px;color:var(--muted);margin:6px 0 21px}
+.close{border:0;background:#f3f4f0;border-radius:7px;width:30px;height:30px;font-size:19px;color:#73776f}
+.field{margin:0 0 15px}
+.field label{display:block;font-size:11px;font-weight:600;color:#555b53;margin:0 0 7px}
+.field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:7px;padding:11px 12px;font-size:13px;outline:none;background:#fdfdfb}
+.field textarea{min-height:112px;resize:vertical;line-height:1.5}
+.field input:focus,.field textarea:focus{border-color:#789181;box-shadow:0 0 0 3px #315b4512}
+.form-error{font-size:12px;color:#b64b3b;min-height:17px;margin:-3px 0 9px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:5px}
+.secondary{border:1px solid var(--line);border-radius:7px;background:white;color:#5e625b;padding:10px 14px;font-size:12px}
+.secondary:hover{background:#f6f6f3}
+.modal .primary{padding:10px 15px;font-size:12px}
+.auth-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at 50% 36%,#eef1e9 0%,var(--paper) 65%)}
+.auth-box{width:min(100%,390px);background:white;border:1px solid var(--line);border-radius:15px;padding:30px;box-shadow:var(--shadow)}
+.auth-box .brand{margin-bottom:35px}
+.auth-box h1{font-size:29px;letter-spacing:-1.2px}
+.auth-box .subhead{font-size:13px;line-height:1.6;margin:9px 0 24px}
+.auth-box .primary{width:100%;justify-content:center;margin-top:4px}
+.auth-note{margin-top:20px;border-top:1px solid var(--line);padding-top:14px;color:#92968d;font-size:10px;line-height:1.55}
+#app{display:none}
+.notice{font-size:11px;color:#8e7760;background:#f6f0e8;border-radius:7px;padding:10px 11px;line-height:1.5;margin:0 0 17px}
+@media(max-width:780px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.shell{padding:0 23px}.topline{align-items:flex-start}}
+@media(max-width:540px){.shell{padding:0 17px}header{height:64px}.header-right{gap:7px}.user-pill{padding-left:9px}.topline{display:block}.topline .primary{margin-top:22px}.metrics{margin:25px 0 22px}.metric{min-width:0;flex:1;padding:11px 12px}.grid{grid-template-columns:1fr}.toolbar{align-items:flex-start;flex-direction:column}.search{width:100%}main{padding-top:35px}footer{gap:20px}}
+</style>
+</head>
+<body>
+<div id="auth" class="auth-screen">
+  <section class="auth-box">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5v14"/><circle cx="12" cy="12" r="8"/></svg></span>roster</div>
+    <p class="eyebrow">Your agent directory</p>
+    <h1 id="auth-title">A home for your agents.</h1>
+    <p class="subhead" id="auth-subtitle">Keep the names and responsibilities of your AI agents in one clear place.</p>
+    <form id="auth-form">
+      <div class="field"><label for="auth-user">Username</label><input id="auth-user" autocomplete="username" required maxlength="32" placeholder="Choose a username"></div>
+      <div class="field"><label for="auth-pass">Password</label><input id="auth-pass" type="password" autocomplete="current-password" required minlength="4" maxlength="128" placeholder="At least 4 characters"></div>
+      <div class="form-error" id="auth-error"></div>
+      <button class="primary" id="auth-submit" type="submit">Create my space <span aria-hidden="true">→</span></button>
+    </form>
+    <div class="auth-note">No email required. Your login and agent list are saved only in this browser.</div>
+  </section>
+</div>
+<div id="app">
+  <div class="shell">
+    <header>
+      <div class="brand"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5v14"/><circle cx="12" cy="12" r="8"/></svg></span>roster</div>
+      <div class="header-right"><span>AGENT DIRECTORY</span><div class="user-pill"><span class="avatar" id="avatar">R</span><span id="username-display">user</span></div><button class="link-btn" id="logout">Log out</button></div>
+    </header>
+    <main>
+      <div class="topline">
+        <div><p class="eyebrow">Your workspace / Agents</p><h1>Know your team.</h1><p class="subhead">A clear place for every agent and what they do.</p></div>
+        <button class="primary" id="add-agent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Add an agent</button>
+      </div>
+      <div class="metrics"><div class="metric"><div class="metric-num" id="agent-count">0</div><div class="metric-label">Total agents</div></div><div class="metric"><div class="metric-num" id="role-count">0</div><div class="metric-label">Roles defined</div></div></div>
+      <div class="toolbar"><span class="section-label">The roster <span id="roster-count"></span></span><label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Search agents..." aria-label="Search agents"></label></div>
+      <section class="grid" id="grid" aria-live="polite"></section>
+      <footer><span>ROSTER · YOUR LOCAL WORKSPACE</span><span>One team, clearly defined.</span></footer>
+    </main>
+  </div>
+</div>
+<div class="overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <div class="modal-head"><h2 id="modal-title">Add an agent</h2><button class="close" id="modal-close" aria-label="Close">×</button></div>
+    <p class="modal-intro">Give this agent a name and a clear responsibility.</p>
+    <form id="agent-form">
+      <div class="field"><label for="agent-name">Agent name</label><input id="agent-name" required maxlength="60" placeholder="e.g. Research Scout"></div>
+      <div class="field"><label for="agent-role">What does this agent do?</label><textarea id="agent-role" required maxlength="500" placeholder="Describe its main role, responsibilities, or specialty..."></textarea></div>
+      <div class="form-error" id="agent-error"></div>
+      <div class="modal-actions"><button class="secondary" type="button" id="cancel-agent">Cancel</button><button class="primary" id="save-agent" type="submit">Save agent</button></div>
+    </form>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+  var ACCOUNT_KEY="roster.account.v1";
+  var SESSION_KEY="roster.session.v1";
+  var editingId=null;
+  var account=read(ACCOUNT_KEY);
+  var auth=document.getElementById("auth"), app=document.getElementById("app");
+  var authForm=document.getElementById("auth-form"), authTitle=document.getElementById("auth-title");
+  var authSubtitle=document.getElementById("auth-subtitle"), authSubmit=document.getElementById("auth-submit");
+  var authUser=document.getElementById("auth-user"), authPass=document.getElementById("auth-pass");
+  function read(key){try{return JSON.parse(localStorage.getItem(key)||"null")}catch(e){return null}}
+  function write(key,value){localStorage.setItem(key,JSON.stringify(value))}
+  function agentKey(){return "roster.agents."+account.user.toLowerCase()}
+  function showAuth(){auth.style.display="grid";app.style.display="none";var exists=!!read(ACCOUNT_KEY);authTitle.textContent=exists?"Welcome back.":"A home for your agents.";authSubtitle.textContent=exists?"Sign in to open your agent directory.":"Keep the names and responsibilities of your AI agents in one clear place.";authSubmit.innerHTML=exists?'Log in <span aria-hidden="true">→</span>':'Create my space <span aria-hidden="true">→</span>';authUser.value=exists?account.user:"";authUser.placeholder=exists?"Your username":"Choose a username";authPass.value="";document.getElementById("auth-error").textContent=""}
+  async function derive(password,salt){var enc=new TextEncoder();var key=await crypto.subtle.importKey("raw",enc.encode(password),"PBKDF2",false,["deriveBits"]);var bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:enc.encode(salt),iterations:150000,hash:"SHA-256"},key,256);return Array.from(new Uint8Array(bits)).map(function(b){return b.toString(16).padStart(2,"0")}).join("")}
+  authForm.addEventListener("submit",async function(e){e.preventDefault();var username=authUser.value.trim();var password=authPass.value;var error=document.getElementById("auth-error");error.textContent="";try{if(account){var hash=await derive(password,account.salt);if(username.toLowerCase()!==account.user.toLowerCase()||hash!==account.hash){error.textContent="That username or password doesn't match.";return}}else{var salt=crypto.randomUUID();account={user:username,salt:salt,hash:await derive(password,salt)};write(ACCOUNT_KEY,account)}sessionStorage.setItem(SESSION_KEY,"1");openApp()}catch(err){error.textContent="Your browser couldn't open the secure login. Please try a current browser."}});
+  function openApp(){account=read(ACCOUNT_KEY);if(!account)return showAuth();auth.style.display="none";app.style.display="block";document.getElementById("username-display").textContent=account.user;document.getElementById("avatar").textContent=account.user.slice(0,1).toUpperCase();render()}
+  function escapeHTML(value){return String(value).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+  function initials(name){return name.trim().split(/\s+/).slice(0,2).map(function(w){return w.charAt(0)}).join("").toUpperCase()}
+  function render(){var agents=read(agentKey())||[];var q=document.getElementById("search").value.trim().toLowerCase();var filtered=agents.filter(function(a){return !q||(a.name+" "+a.role).toLowerCase().includes(q)});document.getElementById("agent-count").textContent=agents.length;document.getElementById("role-count").textContent=agents.length;document.getElementById("roster-count").textContent="("+filtered.length+")";var grid=document.getElementById("grid");if(!filtered.length){grid.innerHTML=agents.length?'<div class="empty"><div class="empty-icon">⌕</div><h2>No agents found</h2><p>Try another search.</p></div>':'<div class="empty"><div class="empty-icon"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.5-3.2 2.4-5 5.5-5s5 1.8 5.5 5M17 8v6M14 11h6"/></svg></div><h2>Your roster starts here.</h2><p>Add your first agent and give its role a name.</p><button class="primary" type="button" onclick="document.getElementById(\x27add-agent\x27).click()">Add your first agent <span aria-hidden="true">→</span></button></div>';return}grid.innerHTML=filtered.map(function(a){return '<article class="card"><div class="card-top"><div class="agent-icon">'+escapeHTML(initials(a.name))+'</div><div class="card-actions"><button class="icon-btn edit-agent" data-id="'+escapeHTML(a.id)+'" aria-label="Edit '+escapeHTML(a.name)+'" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m14 5 5 5M4 20l4-.8L19 8a2.1 2.1 0 0 0-3-3L5 16l-1 4Z"/></svg></button><button class="icon-btn delete-agent" data-id="'+escapeHTML(a.id)+'" aria-label="Delete '+escapeHTML(a.name)+'" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13h12l1-13M9 7V4h6v3"/></svg></button></div></div><h3>'+escapeHTML(a.name)+'</h3><p>'+escapeHTML(a.role)+'</p><div class="card-foot"><span class="dot"></span> ROLE DEFINED</div></article>'}).join("");grid.querySelectorAll(".edit-agent").forEach(function(b){b.addEventListener("click",function(){editAgent(b.dataset.id)})});grid.querySelectorAll(".delete-agent").forEach(function(b){b.addEventListener("click",function(){deleteAgent(b.dataset.id)})})}
+  function openModal(agent){editingId=agent?agent.id:null;document.getElementById("modal-title").textContent=agent?"Edit agent":"Add an agent";document.getElementById("save-agent").textContent=agent?"Save changes":"Save agent";document.getElementById("agent-name").value=agent?agent.name:"";document.getElementById("agent-role").value=agent?agent.role:"";document.getElementById("agent-error").textContent="";document.getElementById("modal-overlay").classList.add("open");setTimeout(function(){document.getElementById("agent-name").focus()},30)}
+  function closeModal(){document.getElementById("modal-overlay").classList.remove("open");editingId=null}
+  function editAgent(id){var a=(read(agentKey())||[]).find(function(x){return x.id===id});if(a)openModal(a)}
+  function deleteAgent(id){var agents=read(agentKey())||[];var target=agents.find(function(a){return a.id===id});if(!target||!confirm('Remove "'+target.name+'" from your roster?'))return;write(agentKey(),agents.filter(function(a){return a.id!==id}));render()}
+  document.getElementById("add-agent").addEventListener("click",function(){openModal(null)});
+  document.getElementById("modal-close").addEventListener("click",closeModal);
+  document.getElementById("cancel-agent").addEventListener("click",closeModal);
+  document.getElementById("modal-overlay").addEventListener("click",function(e){if(e.target.id==="modal-overlay")closeModal()});
+  document.getElementById("agent-form").addEventListener("submit",function(e){e.preventDefault();var name=document.getElementById("agent-name").value.trim();var role=document.getElementById("agent-role").value.trim();if(!name||!role){document.getElementById("agent-error").textContent="Add both a name and a responsibility.";return}var agents=read(agentKey())||[];if(editingId){agents=agents.map(function(a){return a.id===editingId?{id:a.id,name:name,role:role}:a})}else{agents.unshift({id:crypto.randomUUID(),name:name,role:role})}write(agentKey(),agents);closeModal();render()});
+  document.getElementById("search").addEventListener("input",render);
+  document.getElementById("logout").addEventListener("click",function(){sessionStorage.removeItem(SESSION_KEY);showAuth()});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")closeModal()});
+  if(account&&sessionStorage.getItem(SESSION_KEY)==="1")openApp();else showAuth();
+})();
+</script>
+</body>
+</html>
