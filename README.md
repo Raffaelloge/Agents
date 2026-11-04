@@ -1,16 +1,15 @@
 # Roster
 
-A small agent directory: sign in with a username and password, then save each agent's name and responsibility.
+A small agent directory: sign in with a username and password, then save each agent's name and responsibility. The roster syncs to Supabase so it is available in another browser after signing in.
 
-## Publish with GitHub Pages
+## Site
 
-1. In this repository, open **Settings → Pages**.
-2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
-3. The included workflow publishes the site whenever a change lands on `main`.
+Open [https://raffaelloge.github.io/Agents/](https://raffaelloge.github.io/Agents/). GitHub Pages publishes changes pushed to `main`.
 
-The site will appear at `https://raffaelloge.github.io/Agents/` after the workflow finishes.
+## Cloud storage
 
-## Where data is stored
+The public site calls the `agents-api` Supabase Edge Function. Password verification and database access happen in that function. The database stores a salted PBKDF2 password hash; the service key is held only in Supabase. Public tables have row-level security enabled and are not accessible to anonymous browser clients.
 
-This is a static GitHub Pages site, so the account and roster are stored in the browser's local storage. They are not sent to GitHub or synced to another browser or device. The password is used as a local sign-in gate; this is not server-backed account security. Clearing this browser's site data removes the roster.
+The current `raffa` account is provisioned in Supabase. When the account first signs in from the browser that has the old local roster, that roster is copied into cloud storage. Sign in from another browser to load the same roster.
 
+The Supabase function source is in `supabase/functions/agents-api/index.ts`. The schema migration is in `supabase/migrations/20261104020701_agents_cloud_sync.sql`. The deployed backend project is configured separately in Supabase; do not commit service keys or password hashes.
